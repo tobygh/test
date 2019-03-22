@@ -43,7 +43,6 @@ public class TaskArrayAdapter extends ArrayAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         TaskInfo task=getItem(position);
-        Log.i("debug","fromList:"+position+"t"+task.title+"d"+task.date);
         View view;
         TaskItemHolder holder;
         if(convertView==null){

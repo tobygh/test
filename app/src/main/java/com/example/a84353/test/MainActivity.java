@@ -66,22 +66,30 @@ public class MainActivity extends AppCompatActivity {
         TaskSQLiteDB db=new TaskSQLiteDB(getApplicationContext());
         SQLiteDatabase database=db.getWritableDatabase();
         ContentValues values;
-        values=new ContentValues();
-        values.put("title","get ToDolist done");
-        values.put("duetime","2019-3-20");
-        database.insert(db.TABLE_TASK,null,values);
+
+        for(int i=0;i<5;i++) {
+            values = new ContentValues();
+            values.put("title", "get ToDolist done");
+            values.put("duetime", "2019-3-20");
+            database.insert(db.TABLE_TASK, null, values);
+            values = new ContentValues();
+            values.put("content","test"+i);
+            database.insert(db.TABLE_NOTE,null,values);
+        }
+        //database.delete(db.TABLE_TASK,"id>10",null);
+       // database.delete(db.TABLE_NOTE,"id>10",null);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         tf=TodaysFragment.newInstance();
         nf=NoteFragment.newInstance();
         wf=WeekFragment.newInstance();
-        ft=getSupportFragmentManager().beginTransaction();
-        /*ft.add(R.id.fgContainer,tf);
+        /*ft=getSupportFragmentManager().beginTransaction();
+        ft.add(R.id.fgContainer,tf);
         ft.add(R.id.fgContainer,nf);
         ft.add(R.id.fgContainer,wf);
         ft.hide(nf);
-        ft.hide(wf);*/
-        ft.commit();
+        ft.hide(wf);
+        ft.commit();*/
     }
 
 }

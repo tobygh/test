@@ -54,13 +54,9 @@ public class TodaysFragment extends Fragment {
 
     private void getData(){
         data=new ArrayList<TaskInfo>();
-       // TaskInfo ti=new TaskInfo("10","20");
-       // Log.i("debug","d"+ti.date+'t'+ti.title );
-        //Cursor cs=
-        // data.add(ti);data.add(ti);data.add(ti);data.add(ti);data.add(ti);data.add(ti);data.add(ti);data.add(ti);data.add(ti);data.add(ti);
         TaskSQLiteDB db=new TaskSQLiteDB(getActivity().getApplicationContext());
         SQLiteDatabase database=db.getWritableDatabase();
-        Cursor cs=database.query(db.TABLE_TASK,null,"id >= 10",null,null,null,null);
+        Cursor cs=database.query(db.TABLE_TASK,null,"1=1",null,null,null,null);
         TaskInfo ti;
         while(cs.moveToNext()){
             ti=new TaskInfo(cs.getString(1),cs.getString(2));
