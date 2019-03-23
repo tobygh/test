@@ -23,6 +23,7 @@ import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +45,7 @@ public class NoteFragment extends Fragment {
     private static Handler timerHandler;
     ConstraintLayout cs;
     EditText et;
+    ImageView iv_left,iv_right,iv_add;
     List<Integer>key;
     List<String> notes;
 
@@ -72,11 +74,33 @@ public class NoteFragment extends Fragment {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     ContentValues cv=new ContentValues();
-                    cv.put("content",((EditText)v).getText().toString());
-                    if(idx<=notes.size())
+                    String ctn=((EditText)v).getText().toString();
+                    if (idx<notes.size()){//edit op
                         database.delete(db.TABLE_NOTE,"id="+key.get(idx),null);
+                        cv.put("key",key.get(idx));
+                        cv.put("content",ctn);
+                        database.insert(db.TABLE_NOTE,null,cv);
+                        notes.set(idx,ctn);
+                    }
+                    else {//add op
+                        cv.put("content",ctn);
+                        database.insert(db.TABLE_NOTE,null,cv);
+                        Cursor cs=database.query(db.TABLE_NOTE,null,"last_insert_rowid()",null,null,null,null);
+                        cs.moveToFirst();
+                        int lastID=cs.getInt(0);
+                        Log.i("debug","lastId"+lastID);
+                        key.add(lastID);
+                        notes.add(ctn);
+                    }
+                    /*if(idx<notes.size()){//edit operation
+                        cv.put("id",key.get(idx));
+                        database.delete(db.TABLE_NOTE,"id="+key.get(idx),null);
+                        notes.set(idx,((EditText)v).getText().toString());
+                    }
                     database.insert(db.TABLE_NOTE,null,cv);
-
+                    if(idx>=notes.size()){//add operation
+                        notes.add()
+                    }*/
                 }
             });
         }
@@ -99,12 +123,18 @@ public class NoteFragment extends Fragment {
             if(idx>0)idx--;
             else idx=notes.size()-1;
             et.setText(notes.get(idx));
+            Log.i("debug","current idx"+idx);
         }
         public void swipeRight(){
             if (notes.isEmpty())return;
             if(idx<notes.size()-1)idx++;
             else idx=0;
             et.setText(notes.get(idx));
+            Log.i("debug","current idx"+idx);
+        }
+        public void newNote(){
+            idx=notes.size();
+            et.setText("");
         }
     }
     private readerController reader;
@@ -140,7 +170,7 @@ public class NoteFragment extends Fragment {
             switchNote=0;
             boolean out=false;
             double dx=noteCenterX-screenCenterX,dy=noteCenterY-screenCenterY;
-
+            Log.i("debug","enddrag");
             double theta=Math.atan(Math.abs(dy/dx));
             if(Math.abs(dx)+Math.abs(dy)>300)out=true;
             int delay=250;
@@ -182,7 +212,7 @@ public class NoteFragment extends Fragment {
                             noteCenterY=screenCenterY;
                             cs.setOnTouchListener(myListener);
                             if(switchNote!=0){
-                                //if (switchNote==1)reader.swipeLeft();
+                                if(switchNote==1)reader.swipeLeft();
                                 if(switchNote==-1) reader.swipeRight();
                             }
                         }
@@ -204,10 +234,14 @@ public class NoteFragment extends Fragment {
             //rotating works not well
             //et.setRotation((float)(-Math.atan((noteCenterX-screenCenterX)/(noteCenterY+1000))*180/Math.PI));
         }
+
+        public void autoDrag(double x,double y){
+            controller.noteCenterX+=x;
+            controller.noteCenterY+=y;
+            controller.endDrag();
+        }
     }
-
     noteEditPositionController controller;
-
     public static NoteFragment newInstance() {
         NoteFragment fragment = new NoteFragment();
         Bundle args = new Bundle();
@@ -217,7 +251,6 @@ public class NoteFragment extends Fragment {
     private View.OnTouchListener myListener=new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-           // Log.i("debug",event.getAction()+":"+event.getX()+","+event.getY());
             if (event.getAction()==1){//up
                 controller.endDrag();
                 return false;
@@ -239,6 +272,27 @@ public class NoteFragment extends Fragment {
         cs=view.findViewById(R.id.notePlane);
         cs.setOnTouchListener(myListener);
         et=view.findViewById(R.id.noteCard);
+        iv_left=view.findViewById(R.id.leftArrow);
+        iv_right=view.findViewById(R.id.rightArrow);
+        iv_add=view.findViewById(R.id.addNote);
+        iv_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reader.newNote();
+            }
+        });
+        iv_left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                controller.autoDrag(-1000,Math.random()*500-250);
+            }
+        });
+        iv_right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                controller.autoDrag(1000,Math.random()*500-250);
+            }
+        });
         theTimer=new Timer();
         timerHandler=new Handler();
         notes=new ArrayList<String>();

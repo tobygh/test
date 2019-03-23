@@ -30,26 +30,16 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     ft=getSupportFragmentManager().beginTransaction();
-                    /*ft.show(tf);
-                    ft.hide(nf);
-                    ft.hide(wf);*/
-
                     ft.replace(R.id.fgContainer,tf);
                     ft.commit();
                     return true;
                 case R.id.navigation_dashboard:
                     ft=getSupportFragmentManager().beginTransaction();
-                    /*ft.hide(tf);
-                    ft.show(nf);
-                    ft.hide(wf);*/
                     ft.replace(R.id.fgContainer,nf);
                     ft.commit();
                     return true;
                 case R.id.navigation_notifications:
                     ft=getSupportFragmentManager().beginTransaction();
-                    /*ft.hide(tf);
-                    ft.hide(nf);
-                    ft.show(wf);*/
                     ft.replace(R.id.fgContainer,wf);
                     ft.commit();
                     return true;
@@ -77,19 +67,13 @@ public class MainActivity extends AppCompatActivity {
             database.insert(db.TABLE_NOTE,null,values);
         }
         //database.delete(db.TABLE_TASK,"id>10",null);
-       // database.delete(db.TABLE_NOTE,"id>10",null);
+        //database.delete(db.TABLE_NOTE,"id>10",null);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         tf=TodaysFragment.newInstance();
         nf=NoteFragment.newInstance();
         wf=WeekFragment.newInstance();
-        /*ft=getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.fgContainer,tf);
-        ft.add(R.id.fgContainer,nf);
-        ft.add(R.id.fgContainer,wf);
-        ft.hide(nf);
-        ft.hide(wf);
-        ft.commit();*/
+
     }
 
 }
