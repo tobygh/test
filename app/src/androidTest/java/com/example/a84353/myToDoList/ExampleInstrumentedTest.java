@@ -1,4 +1,4 @@
-package com.example.a84353.test;
+package com.example.a84353.myToDoList;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

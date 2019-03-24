@@ -1,25 +1,20 @@
-package com.example.a84353.test;
+package com.example.a84353.myToDoList;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
-import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
-import android.view.animation.AnimationUtils;
-import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -77,7 +72,7 @@ public class NoteFragment extends Fragment {
                     String ctn=((EditText)v).getText().toString();
                     if (idx<notes.size()){//edit op
                         database.delete(db.TABLE_NOTE,"id="+key.get(idx),null);
-                        cv.put("key",key.get(idx));
+                        cv.put("id",key.get(idx));
                         cv.put("content",ctn);
                         database.insert(db.TABLE_NOTE,null,cv);
                         notes.set(idx,ctn);
