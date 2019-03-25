@@ -14,10 +14,10 @@ public class TaskSQLiteDB extends SQLiteOpenHelper {
     public static final String TABLE_NOTE="notes";
     private static final String TASK_TABLE_CREATE_SQL ="create table "+TABLE_TASK+"("+
             "id integer primary key autoincrement,"+
-            "title varchar(20) not null,"+
-            "list varchar(500),"+
-            "beginTime text,"+
-            "finishTime text,"+
+            "title text not null,"+
+            "list text,"+
+            "beginMTime integer,"+
+            "finishMTime integer,"+
             "photoUri text"+
             ")";
     private static final String NOTE_TABLE_CREATE_SQL ="create table "+TABLE_NOTE+"("+

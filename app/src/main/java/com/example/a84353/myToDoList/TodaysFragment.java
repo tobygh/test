@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -25,6 +27,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class TodaysFragment extends Fragment {
@@ -39,6 +42,7 @@ public class TodaysFragment extends Fragment {
 
     @Override
     public void onViewCreated(final View view, @Nullable Bundle bundle) {
+
         ListView ls = view.findViewById(R.id.ls_today);
         ImageView iv = view.findViewById(R.id.addToday);
         iv.setOnClickListener(new View.OnClickListener() {
@@ -52,6 +56,15 @@ public class TodaysFragment extends Fragment {
         getData();
         TaskArrayAdapter adapter = new TaskArrayAdapter(getContext(), R.layout.task, data);
         ls.setAdapter(adapter);
+        TextView tv=view.findViewById(R.id.tv_today);
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft= getActivity().getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.fgContainer,AllNoteFragment.newInstance());
+                ft.commit();
+            }
+        });
     }
 
     @Override
@@ -71,14 +84,22 @@ public class TodaysFragment extends Fragment {
         data = new ArrayList<TaskInfo>();
         TaskSQLiteDB db = new TaskSQLiteDB(getActivity().getApplicationContext());
         SQLiteDatabase database = db.getWritableDatabase();
-        Cursor cs = database.query(db.TABLE_TASK, null, "1=1", null, null, null, null);
+        Calendar cal=Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY,23);
+        cal.set(Calendar.MINUTE,59);
+        cal.set(Calendar.SECOND,59);
+        Cursor cs = database.query(db.TABLE_TASK, null, "beginMTime<="+cal.getTimeInMillis(), null, null, null, "beginMTime");
         TaskInfo ti;
         while (cs.moveToNext()) {
             //basic taskinfo
-            Log.i("debug", "fromDB:" + cs.getInt(0) + cs.getString(1) + cs.getString(2));
+            Log.i("debug", "Today fromDB: " +
+                    "id:"+ cs.getInt(0) +
+                    "title"+ cs.getString(1) +
+                    "list"+ cs.getString(2)+
+                    "base"+cs.getString(5));
             //may have picture
-            String photoName = cs.getString(5);
-            Log.i("debug","list "+photoName);
+            //String photoName = cs.getString(5);
+            //Log.i("debug","buildingList "+photoName);
             /*String base = "";
             if (photoName != null) { try {
                 File fDir=getActivity().getExternalCacheDir();
@@ -107,7 +128,7 @@ public class TodaysFragment extends Fragment {
                 }
             }*/
             //ti = new TaskInfo(cs.getInt(0), cs.getString(1), cs.getString(2), base);
-            ti=new TaskInfo(cs.getInt(0), cs.getString(1), cs.getString(2), cs.getString(5));
+            ti=new TaskInfo(cs.getInt(0), cs.getString(1), cs.getLong(3), cs.getString(5));
             data.add(ti);
             //database.delete(db.TABLE_TASK,"id>=10",null);
         }

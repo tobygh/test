@@ -4,6 +4,11 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
+    <string-array name="spinner">
+        <item>sort by add time</item>
+        <item>sort by begin time</item>
+        <item>sort by end time</item>
+        <item>sort by title</item>
+    </string-array>
 
 </resources>

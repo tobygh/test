@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -29,9 +31,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 public class TaskDetail extends AppCompatActivity {
-    EditText taskTtl,taskCnt,sYear,sMonth,sDay,sHour,sMinute,eHour,eMinute;
+    EditText taskTtl,taskCnt,sYear,sMonth,sDay,sHour,sMinute,
+                            eHour,eMinute;
     ImageView iv_addPhoto,iv_taskPhoto;
     int taskId;
     TaskSQLiteDB db;
@@ -52,22 +59,22 @@ public class TaskDetail extends AppCompatActivity {
             if (cs.moveToFirst())do{
                 taskTtl.setText(""+cs.getString(1));
                 taskCnt.setText(""+cs.getString(2));
-                dateFormat =new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                //dateFormat =new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                 cal=Calendar.getInstance();
-                try{
-                    cal.setTime(dateFormat.parse(cs.getString(3)));
-                    sYear.setText(""+cal.get(Calendar.YEAR));
-                    sMonth.setText(""+(cal.get(Calendar.MONTH)+1));
-                    sDay.setText(""+cal.get(Calendar.DAY_OF_MONTH));
-                    sHour.setText(""+cal.get(Calendar.HOUR));
-                    sMinute.setText(""+cal.get(Calendar.MINUTE));
-                }catch(ParseException pe){Log.i("debug","ParseError"+pe.getMessage());}
+                //cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+                long mdate=cs.getLong(3);
+                //cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+                cal.setTimeInMillis(mdate);
+                sYear.setText(""+cal.get(Calendar.YEAR));
+                sMonth.setText(""+(cal.get(Calendar.MONTH)+1));
+                sDay.setText(""+cal.get(Calendar.DAY_OF_MONTH));
+                sHour.setText(""+cal.get(Calendar.HOUR_OF_DAY));
+                sMinute.setText(""+cal.get(Calendar.MINUTE));
 
-                try{
-                    cal.setTime(dateFormat.parse(cs.getString(4)));
-                    eHour.setText(""+cal.get(Calendar.HOUR));
-                    eMinute.setText(""+cal.get(Calendar.MINUTE));
-                }catch(ParseException pe){Log.i("debug","ParseError"+pe.getMessage());}
+                mdate=cs.getLong(4);
+                cal.setTimeInMillis(mdate);
+                eHour.setText(""+cal.get(Calendar.HOUR_OF_DAY));
+                eMinute.setText(""+cal.get(Calendar.MINUTE));
 
                 photoBase=cs.getString(5);
                 if(photoBase!=null){
@@ -81,39 +88,89 @@ public class TaskDetail extends AppCompatActivity {
             else {
                 taskTtl.setText("new Task");
                 taskCnt.setText("more");
-                Calendar cal=Calendar.getInstance();
-                sYear.setText(""+cal.get(Calendar.YEAR));
-                sMonth.setText(""+(cal.get(Calendar.MONTH)+1));
-                sDay.setText(""+cal.get(Calendar.DAY_OF_MONTH));
-                sHour.setText(""+cal.get(Calendar.HOUR));
-                sMinute.setText(""+cal.get(Calendar.MINUTE));
-                cal.setTimeInMillis(cal.getTimeInMillis()+3600000);
-                eHour.setText(""+cal.get(Calendar.HOUR));
-                eMinute.setText(""+cal.get(Calendar.MINUTE));
+                cal=Calendar.getInstance();
+                //cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+                int yy=cal.get(Calendar.YEAR),
+                mm=cal.get(Calendar.MONTH)+1,
+                dd=cal.get(Calendar.DAY_OF_MONTH),
+                hh=cal.get(Calendar.HOUR_OF_DAY),
+                mn=cal.get(Calendar.MINUTE),
+                ss=cal.get(Calendar.SECOND);
+                sYear.setText(  ""+yy);
+                sMonth.setText( ""+mm);
+                sDay.setText(   ""+dd);
+                sHour.setText(  ""+hh);
+                sMinute.setText(""+mn);
+                Calendar later=Calendar.getInstance();
+                later.setTimeInMillis(cal.getTimeInMillis()+3600000);
+                cal.set(yy,mm,dd,23,59,59);
+
+                if (later.before(cal))
+                    later=cal;
+
+                eHour.setText(""+later.get(Calendar.HOUR_OF_DAY));
+
+                eMinute.setText(""+later.get(Calendar.MINUTE));
             }
         }
         void delete(){
             if (taskId>=0)
             database.delete(db.TABLE_TASK,"id="+taskId,null);
         }
+        private int String2Int(String str){
+            Pattern p=Pattern.compile("[^0-9]");
+            Matcher m=p.matcher(str);
+            str= m.replaceAll("");
+            Log.i("debug","s2i "+str);
+            int res;
+            if (str!=null)
+                return res=Integer.parseInt(str);
+            return 0;
+        }
         void update(){
+            boolean flag=true;
+            int yy=String2Int(sYear.getText().toString()),
+                    mm=String2Int(sMonth.getText().toString()),
+                    dd=String2Int(sDay.getText().toString()),
+                    hh=String2Int(sHour.getText().toString()),
+                    mn=String2Int(sMinute.getText().toString()),
+                    ehh=String2Int(eHour.getText().toString()),
+                    emn=String2Int(eMinute.getText().toString());
+            Log.i("debug","detail update "+yy+mm+dd+hh+mn+ehh+emn);
+            if (hh>23){hh=23;flag=false;}
+            if (mn>59){mn=59;flag=false;}
+            if (ehh>23){ehh=23;flag=false;}
+            if (emn>59){emn=59;flag=false;}
+            if (mm>12){mm=12;flag=false;}
+            else if (mm<1){mm=1;flag=false;}
+            int days[]={-1,31,28,31,30,31,30,31,31,30,31,30,31};
+            if ((yy%400==0)||((yy%4==0)&&(yy%100!=0)))days[2]=29;
+            if (dd<1){dd=1;flag=false;}
+            else if (dd>days[mm]){dd=days[mm];flag=false;}
+            sYear.setText(""+yy);
+            sMonth.setText(""+mm);
+            sDay.setText(""+dd);
+            sHour.setText(""+hh);
+            sMinute.setText(""+mn);
+            eHour.setText(""+ehh);
+            eMinute.setText(""+emn);
 
+            //if (flag==false){
+           //     Toast.makeText(TaskDetail.this, "Please Check the format", Toast.LENGTH_SHORT).show();
+            //    return;
+           // }
             delete();
             ContentValues cv=new ContentValues();
             if (taskId>=0)cv.put("id",taskId);
             cv.put("title",taskTtl.getText().toString());
             cv.put("list",taskCnt.getText().toString());
-            String ymd=sYear.getText()+"-"+
-                    sMonth.getText()+"-"+
-                    sDay.getText();
-            String sdate=ymd+" "+
-                    sHour.getText()+":"+
-                    sMinute.getText()+":00";
-            String edate=ymd+" "+
-                    eHour.getText()+":"+
-                    eMinute.getText()+":00";
-            cv.put("beginTime",sdate);
-            cv.put("finishTime",edate);
+            cal=Calendar.getInstance();
+           // cal.setTimeZone(TimeZone.getTimeZone("GMT"));
+            mm--;
+            cal.set(yy,mm,dd,hh,mn,00);
+            cv.put("beginMTime",cal.getTimeInMillis());
+            cal.set(yy,mm,dd,ehh,emn,59);
+            cv.put("finishMTime",cal.getTimeInMillis());
             if(photoBase!=null){
                 Log.i("debug",photoBase);
                 cv.put("photoUri",photoBase);
@@ -172,7 +229,8 @@ public class TaskDetail extends AppCompatActivity {
         iv_addPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar cal=Calendar.getInstance();
+                cal=Calendar.getInstance();
+                //cal.setTimeZone(TimeZone.getTimeZone("GMT"));
                 File fDir=getExternalCacheDir();
                 File pDir=new File(fDir,"images");
                 if (!pDir.exists())pDir.mkdirs();
