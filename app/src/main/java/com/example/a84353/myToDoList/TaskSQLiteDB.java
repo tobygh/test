@@ -17,7 +17,8 @@ public class TaskSQLiteDB extends SQLiteOpenHelper {
             "title varchar(20) not null,"+
             "list varchar(500),"+
             "beginTime text,"+
-            "finishTime text"+
+            "finishTime text,"+
+            "photoUri text"+
             ")";
     private static final String NOTE_TABLE_CREATE_SQL ="create table "+TABLE_NOTE+"("+
             "id integer primary key autoincrement,"+
