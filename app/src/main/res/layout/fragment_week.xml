@@ -1,14 +1,354 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".WeekFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="week" />
+        android:layout_height="match_parent">
 
+
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TableLayout
+                android:id="@+id/weekTable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:stretchColumns="*">
+
+                <TableRow>
+                    <TextView android:id="@+id/week0" android:text="Mon" android:gravity="center" android:textSize="20sp"/>
+                    <TextView android:id="@+id/week1" android:text="Tue" android:gravity="center" android:textSize="20sp"/>
+                    <TextView android:id="@+id/week2" android:text="Wen" android:gravity="center" android:textSize="20sp"/>
+                    <TextView android:id="@+id/week3" android:text="Thu" android:gravity="center" android:textSize="20sp"/>
+                    <TextView android:id="@+id/week4" android:text="Fri" android:gravity="center" android:textSize="20sp"/>
+                    <TextView android:id="@+id/week5" android:text="Sat" android:gravity="center" android:textSize="20sp"/>
+                    <TextView android:id="@+id/week6" android:text="Sun" android:gravity="center" android:textSize="20sp"/>
+
+                </TableRow>
+                <TableRow>
+
+                    <ImageView
+                        android:id="@+id/wb11"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb12"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb13"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb14"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb15"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb16"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb17"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+                </TableRow>
+
+                <TableRow>
+
+                    <ImageView
+                        android:id="@+id/wb21"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb22"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb23"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb24"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb25"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb26"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb27"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+                </TableRow>
+
+                <TableRow>
+
+                    <ImageView
+                        android:id="@+id/wb31"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb32"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb33"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb34"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb35"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb36"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb37"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+                </TableRow>
+
+                <TableRow>
+
+                    <ImageView
+                        android:id="@+id/wb41"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb42"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb43"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb44"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb45"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb46"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb47"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+                </TableRow>
+
+                <TableRow>
+
+                    <ImageView
+                        android:id="@+id/wb51"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb52"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb53"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb54"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb55"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb56"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb57"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+                </TableRow>
+
+                <TableRow>
+
+                    <ImageView
+                        android:id="@+id/wb61"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb62"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb63"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb64"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb65"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb66"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+
+                    <ImageView
+                        android:id="@+id/wb67"
+                        android:layout_width="@dimen/week_block_width"
+                        android:layout_height="@dimen/week_block_height"
+                        android:layout_margin="@dimen/week_block_margin"
+                        android:src="@drawable/week_free" />
+                </TableRow>
+            </TableLayout>
+        </android.support.constraint.ConstraintLayout>
+
+    </ScrollView>
 </FrameLayout>

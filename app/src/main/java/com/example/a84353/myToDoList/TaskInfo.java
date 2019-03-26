@@ -16,7 +16,7 @@ public class TaskInfo {
         Calendar cal=Calendar.getInstance();
         Log.i("debug","taskInfo date" +dstr);
         cal.setTimeInMillis(dstr);
-        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.CHINA);
+        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
         date=format.format(cal.getTime());
         base=bstr;
     }

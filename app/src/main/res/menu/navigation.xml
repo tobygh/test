@@ -8,12 +8,12 @@
 
     <item
         android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/todo"
-        android:title="ToDo" />
+        android:icon="@drawable/note"
+        android:title="Note" />
 
     <item
         android:id="@+id/navigation_notifications"
-        android:icon="@drawable/todo"
-        android:title="ToDo" />
+        android:icon="@drawable/week"
+        android:title="Week" />
 
 </menu>

@@ -105,7 +105,7 @@ public class TaskDetail extends AppCompatActivity {
                 later.setTimeInMillis(cal.getTimeInMillis()+3600000);
                 cal.set(yy,mm,dd,23,59,59);
 
-                if (later.before(cal))
+                if (later.after(cal))
                     later=cal;
 
                 eHour.setText(""+later.get(Calendar.HOUR_OF_DAY));

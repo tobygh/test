@@ -39,11 +39,11 @@ public class NoteFragment extends Fragment {
     static Timer theTimer;
     private static Handler timerHandler;
     ConstraintLayout cs;
-    EditText et;
+    EditText et,low;
     ImageView iv_left,iv_right,iv_add;
     List<Integer>key;
     List<String> notes;
-
+    int animDelay=250;
     private class readerController{
         TaskSQLiteDB db;
         SQLiteDatabase database;
@@ -113,14 +113,14 @@ public class NoteFragment extends Fragment {
                 et.setText("");
             else et.setText(notes.get(idx));
         }
-        public void swipeLeft(){
+        public void displaylast(){
             if (notes.isEmpty())return;
             if(idx>0)idx--;
             else idx=notes.size()-1;
             et.setText(notes.get(idx));
             Log.i("debug","current idx"+idx);
         }
-        public void swipeRight(){
+        public void displayNext(){
             if (notes.isEmpty())return;
             if(idx<notes.size()-1)idx++;
             else idx=0;
@@ -130,6 +130,16 @@ public class NoteFragment extends Fragment {
         public void newNote(){
             idx=notes.size();
             et.setText("");
+        }
+        public String getNextNote(){
+            if (notes.isEmpty())return null;
+            int nid=idx+1;if (nid>=notes.size())nid=0;
+            return notes.get(nid);
+        }
+        public String getLastNote(){
+            if (notes.isEmpty())return null;
+            int nid=idx-1;if (nid<0)nid=notes.size()-1;
+            return notes.get(nid);
         }
     }
     private readerController reader;
@@ -168,21 +178,55 @@ public class NoteFragment extends Fragment {
             Log.i("debug","enddrag");
             double theta=Math.atan(Math.abs(dy/dx));
             if(Math.abs(dx)+Math.abs(dy)>300)out=true;
-            int delay=250;
             AnimationSet anims=new AnimationSet(false);
-            if(out){
+            if (out){
+                smoothToOut(1);
+            }
+            /*if(out){
+                //switch only get next note
                 switchNote=1;
-                int ox=(int)(1000*Math.cos(theta));if(dx<0){ox=-ox;switchNote=-1;}
+                int ox=(int)(1000*Math.cos(theta));if(dx<0){ox=-ox;}
                 int oy=(int)(1000*Math.sin(theta));if (dy<0)oy=-oy;
                 TranslateAnimation tanim=new TranslateAnimation(0,ox,0,oy);
                 anims.addAnimation(tanim);
-                anims.setDuration(delay);
+                anims.setDuration(animDelay);
                 et.startAnimation(anims);
-            }
+                cs.setOnTouchListener(null);
+                getBack=new TimerTask() {
+                    @Override
+                    public void run() {
+                        timerHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                et.setVisibility(View.INVISIBLE);
+                                //try to avoid the shake
+                                et.clearAnimation();
+                                et.setX((float)noteOriginX);
+                                et.setY((float)noteOriginY);
+                                et.setFocusable(true);
+                                et.setRotation(0.0f);
+                                et.setVisibility(View.VISIBLE);
+                                noteCenterX=screenCenterX;
+                                noteCenterY=screenCenterY;
+                                cs.setOnTouchListener(myListener);
+                                if(switchNote!=0){
+                                    if(switchNote==1)reader.swipeLeft();
+                                    if(switchNote==-1) reader.swipeRight();
+                                }
+                            }
+                        });
+
+                    }
+                };
+                theTimer.schedule(getBack,animDelay-10);
+            }*/
+            else {
+                smoothToCenter(0);
+            }/*
             else {
                 TranslateAnimation tanim = new TranslateAnimation(0, (int)(-dx), 0, (int)(-dy));
                 anims.addAnimation(tanim);
-                anims.setDuration(delay);
+                anims.setDuration(animDelay);
                 anims.setFillAfter(true);
                 anims.setFillBefore(false);
                 et.startAnimation(anims);
@@ -215,13 +259,14 @@ public class NoteFragment extends Fragment {
 
                 }
             };
-            theTimer.schedule(getBack,delay-10);
+            theTimer.schedule(getBack,animDelay-10);*/
             //open keyboard, but why?
             //InputMethodManager iptMM = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             //iptMM.showSoftInput(et,InputType.TYPE_MASK_FLAGS);
         }
         public void dragTo(double x,double y){
             double dx=x-dragStartX,dy=y-dragStartY;
+            low.setText(reader.getNextNote());
             noteCenterX=screenCenterX+dx;
             noteCenterY=screenCenterY+dy;
             et.setX((float)(noteCenterX-noteWidth/2));
@@ -229,11 +274,111 @@ public class NoteFragment extends Fragment {
             //rotating works not well
             //et.setRotation((float)(-Math.atan((noteCenterX-screenCenterX)/(noteCenterY+1000))*180/Math.PI));
         }
+        public void avoidAnotherAnimation(){
+            iv_left.setClickable(false);
+            iv_right.setClickable(false);
+            cs.setOnTouchListener(null);
+        }
+        public void readyToAcceptAnimation(){
+            iv_left.setClickable(true);
+            iv_right.setClickable(true);
+            cs.setOnTouchListener(myListener);
+        }
 
+        public void smoothToCenter(final int toLast){
+            double dx=noteCenterX-screenCenterX,dy=noteCenterY-screenCenterY;
+            double theta=Math.atan(Math.abs(dy/dx));
+            AnimationSet anims=new AnimationSet(false);
+            TranslateAnimation tanim = new TranslateAnimation(0, (int)(-dx), 0, (int)(-dy));
+            anims.addAnimation(tanim);
+            anims.setDuration(animDelay);
+            anims.setFillAfter(true);
+            anims.setFillBefore(false);
+            avoidAnotherAnimation();
+            et.startAnimation(anims);
+            //cs.setOnTouchListener(null);
+            getBack=new TimerTask() {
+                @Override
+                public void run() {
+                    timerHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            et.setVisibility(View.INVISIBLE);
+                            et.clearAnimation();
+                            et.setX((float)noteOriginX);
+                            et.setY((float)noteOriginY);
+                            et.setFocusable(true);
+                            et.setRotation(0.0f);
+                            et.setVisibility(View.VISIBLE);
+                            noteCenterX=screenCenterX;
+                            noteCenterY=screenCenterY;
+                            readyToAcceptAnimation();
+                            //cs.setOnTouchListener(myListener);
+                            if (toLast==1)reader.displaylast();
+                        }
+                    });
+
+                }
+            };
+            theTimer.schedule(getBack,animDelay-10);
+        }
+        public void smoothToOut(final int toNext) {
+            double dx = noteCenterX - screenCenterX, dy = noteCenterY - screenCenterY;
+            double theta = Math.atan(Math.abs(dy / dx));
+            AnimationSet anims = new AnimationSet(false);
+            //switch out get next note
+            int ox = (int) (1000 * Math.cos(theta));
+            if (dx < 0) {ox = -ox;}
+            int oy = (int) (1000 * Math.sin(theta));
+            if (dy < 0) {oy = -oy;}
+            TranslateAnimation tanim = new TranslateAnimation(0, ox, 0, oy);
+            anims.addAnimation(tanim);
+            anims.setDuration(animDelay);
+            et.startAnimation(anims);
+            avoidAnotherAnimation();
+            //cs.setOnTouchListener(null);
+            getBack = new TimerTask() {
+                @Override
+                public void run() {
+                    timerHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            et.setVisibility(View.INVISIBLE);
+                            //try to avoid the shake
+                            et.clearAnimation();
+                            et.setX((float) noteOriginX);
+                            et.setY((float) noteOriginY);
+                            et.setFocusable(true);
+                            et.setRotation(0.0f);
+                            et.setVisibility(View.VISIBLE);
+                            noteCenterX = screenCenterX;
+                            noteCenterY = screenCenterY;
+                            readyToAcceptAnimation();
+                            //cs.setOnTouchListener(myListener);
+                            if (toNext==1)reader.displayNext();
+                        }
+                    });
+
+                }
+            };
+            theTimer.schedule(getBack, animDelay - 10);
+        }
         public void autoDrag(double x,double y){
-            controller.noteCenterX+=x;
-            controller.noteCenterY+=y;
-            controller.endDrag();
+
+                controller.noteCenterX += x;
+                controller.noteCenterY += y;
+            if (x>0) {
+                low.setText(reader.getNextNote());
+                smoothToOut(1);
+            }
+            else {
+                low.setText(notes.get(reader.idx));
+
+                et.setX((float)(noteCenterX-noteWidth/2));
+                et.setY((float)(noteCenterY-noteHeight/2));
+                et.setText(reader.getLastNote());
+                smoothToCenter(1);
+            }
         }
     }
     noteEditPositionController controller;
@@ -267,6 +412,7 @@ public class NoteFragment extends Fragment {
         cs=view.findViewById(R.id.notePlane);
         cs.setOnTouchListener(myListener);
         et=view.findViewById(R.id.noteCard);
+        low=view.findViewById(R.id.noteCardAvoid);
         iv_left=view.findViewById(R.id.leftArrow);
         iv_right=view.findViewById(R.id.rightArrow);
         iv_add=view.findViewById(R.id.addNote);
@@ -279,13 +425,13 @@ public class NoteFragment extends Fragment {
         iv_left.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                controller.autoDrag(-1000,Math.random()*500-250);
+                controller.autoDrag(-500,Math.random()*500-250);
             }
         });
         iv_right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                controller.autoDrag(1000,Math.random()*500-250);
+                controller.autoDrag(500,Math.random()*500-250);
             }
         });
         theTimer=new Timer();

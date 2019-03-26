@@ -1,0 +1,7 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <corners android:radius="@dimen/week_block_radius">
+    </corners>
+    <solid android:color="#5F5F5F"></solid>
+    <stroke android:width="3dp" android:color="#000000">
+    </stroke>
+</shape>

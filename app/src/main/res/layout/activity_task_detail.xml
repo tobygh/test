@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context=".TaskDetail">
 
     <EditText
@@ -39,12 +41,13 @@
             android:id="@+id/noteLinear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
             <EditText
                 android:id="@+id/noteBox"
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
-                android:background="@drawable/border"
+                android:background="@drawable/listitemborder"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:ems="10"
@@ -80,7 +83,7 @@
                     android:layout_height="40dp"
                     android:layout_marginEnd="10dp"
                     android:ems="10"
-                    android:background="@drawable/border"
+                    android:background="@drawable/listitemborder"
                     android:gravity="center"
                     android:inputType="number"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -95,7 +98,7 @@
                     android:layout_marginEnd="10dp"
                     android:ems="10"
                     android:gravity="center"
-                    android:background="@drawable/border"
+                    android:background="@drawable/listitemborder"
                     android:inputType="number"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/editDay"
@@ -108,7 +111,7 @@
                     android:layout_height="40dp"
                     android:layout_marginEnd="80dp"
                     android:ems="10"
-                    android:background="@drawable/border"
+                    android:background="@drawable/listitemborder"
                     android:gravity="center"
                     android:inputType="number"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -142,7 +145,7 @@
                     android:layout_height="40dp"
                     android:layout_marginEnd="9dp"
                     android:gravity="center"
-                    android:background="@drawable/border"
+                    android:background="@drawable/listitemborder"
                     android:inputType="number"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/startMin"
@@ -153,7 +156,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginEnd="80dp"
-                    android:background="@drawable/border"
+                    android:background="@drawable/listitemborder"
                     android:gravity="center"
                     android:inputType="number"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -188,7 +191,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginEnd="9dp"
-                    android:background="@drawable/border"
+                    android:background="@drawable/listitemborder"
                     android:gravity="center"
                     android:inputType="number"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -202,7 +205,7 @@
                     android:layout_marginEnd="80dp"
                     android:gravity="center"
 
-                    android:background="@drawable/border"
+                    android:background="@drawable/listitemborder"
 
                     android:inputType="number"
                     app:layout_constraintBottom_toBottomOf="parent"
