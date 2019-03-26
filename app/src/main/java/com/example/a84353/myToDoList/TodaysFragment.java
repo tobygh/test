@@ -44,7 +44,7 @@ public class TodaysFragment extends Fragment {
     public void onViewCreated(final View view, @Nullable Bundle bundle) {
 
         ListView ls = view.findViewById(R.id.ls_today);
-        ImageView iv = view.findViewById(R.id.addToday);
+        TextView iv = view.findViewById(R.id.addToday);
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,43 +91,6 @@ public class TodaysFragment extends Fragment {
         Cursor cs = database.query(db.TABLE_TASK, null, "beginMTime<="+cal.getTimeInMillis(), null, null, null, "beginMTime");
         TaskInfo ti;
         while (cs.moveToNext()) {
-            //basic taskinfo
-            Log.i("debug", "Today fromDB: " +
-                    "id:"+ cs.getInt(0) +
-                    "title"+ cs.getString(1) +
-                    "list"+ cs.getString(2)+
-                    "base"+cs.getString(5));
-            //may have picture
-            //String photoName = cs.getString(5);
-            //Log.i("debug","buildingList "+photoName);
-            /*String base = "";
-            if (photoName != null) { try {
-                File fDir=getActivity().getExternalCacheDir();
-                File pDir=new File(fDir,"images");
-                if (pDir.exists()) {
-                    File pFile = new File(pDir, photoName);
-                    if(pFile.exists()){
-                        Bitmap photo = BitmapFactory.decodeFile(pFile.getPath());
-                        float ratio = 200.f / photo.getWidth();
-                        Matrix matrix = new Matrix();
-                        matrix.preScale(ratio, ratio);
-                        photo = Bitmap.createBitmap(photo, 0, 0, photo.getWidth(), photo.getHeight(), matrix, false);
-                        ByteArrayOutputStream otsm = new ByteArrayOutputStream();
-                        photo.compress(Bitmap.CompressFormat.JPEG, 100, otsm);
-                        otsm.flush();
-                        otsm.close();
-                        byte[] bytes = otsm.toByteArray();
-                        base = Base64.encodeToString(bytes, Base64.DEFAULT);
-                    }
-                }
-            }
-            catch (FileNotFoundException fnf) {
-                    Log.i("debug", "list error "+fnf.getMessage());
-                } catch (IOException ioe) {
-                    Log.i("debug", "list error"+ioe.getMessage());
-                }
-            }*/
-            //ti = new TaskInfo(cs.getInt(0), cs.getString(1), cs.getString(2), base);
             ti=new TaskInfo(cs.getInt(0), cs.getString(1), cs.getLong(3), cs.getString(5));
             data.add(ti);
             //database.delete(db.TABLE_TASK,"id>=10",null);

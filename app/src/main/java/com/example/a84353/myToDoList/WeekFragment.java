@@ -47,8 +47,8 @@ public class WeekFragment extends Fragment {
                 left.set(Calendar.DAY_OF_WEEK,j-1);
                 right.set(Calendar.DAY_OF_WEEK,j-1);
                 String sqlOp="select count(*) from "+db.TABLE_TASK+
-                        " where (beginMTime<="+right.getTimeInMillis()+" and beginMTime>="+left.getTimeInMillis()+
-                        ") or (finishMTime<="+right.getTimeInMillis()+" and finishMTime>="+left.getTimeInMillis()+")";
+                        " where (beginMTime<="+right.getTimeInMillis()+
+                        " and finishMTime>="+left.getTimeInMillis()+")";
                 Log.i("debug","week sql "+sqlOp);
 
                 Cursor cs=database.rawQuery(sqlOp,

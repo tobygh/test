@@ -49,10 +49,10 @@ public class NoteFragment extends Fragment {
         SQLiteDatabase database;
         private int idx=0;
         readerController(){
-            idx=1;
+            idx=0;
             db=new TaskSQLiteDB(getActivity().getApplicationContext());
             database=db.getWritableDatabase();
-            Cursor cs=database.query(db.TABLE_NOTE,null,"1=1",null,null,null,null);
+            Cursor cs=database.query(db.TABLE_NOTE,null,"1=1",null,null,null,"id asc");
             String tnote;int k;
             if (cs.moveToFirst())do{
                 k=cs.getInt(0);
@@ -61,7 +61,7 @@ public class NoteFragment extends Fragment {
                 key.add(k);
                 notes.add(tnote);
             }while(cs.moveToNext());
-            if(idx>=notes.size())
+            if(notes.isEmpty())
                 et.setText("");
             else et.setText(notes.get(idx));
 
@@ -295,6 +295,7 @@ public class NoteFragment extends Fragment {
             anims.setFillAfter(true);
             anims.setFillBefore(false);
             avoidAnotherAnimation();
+            if (toLast==1)reader.displaylast();
             et.startAnimation(anims);
             //cs.setOnTouchListener(null);
             getBack=new TimerTask() {
@@ -314,7 +315,7 @@ public class NoteFragment extends Fragment {
                             noteCenterY=screenCenterY;
                             readyToAcceptAnimation();
                             //cs.setOnTouchListener(myListener);
-                            if (toLast==1)reader.displaylast();
+
                         }
                     });
 
@@ -376,7 +377,8 @@ public class NoteFragment extends Fragment {
 
                 et.setX((float)(noteCenterX-noteWidth/2));
                 et.setY((float)(noteCenterY-noteHeight/2));
-                et.setText(reader.getLastNote());
+                //et.setText(reader.getLastNote());
+                //reader.displaylast();
                 smoothToCenter(1);
             }
         }

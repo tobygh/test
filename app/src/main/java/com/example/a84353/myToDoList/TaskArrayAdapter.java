@@ -64,21 +64,22 @@ public class TaskArrayAdapter extends ArrayAdapter {
 
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
+        Log.i("debug","adapter "+position);
         task=getItem(position);
         View view;
         TaskItemHolder holder;
-        if(convertView==null){
+        //if(convertView==null){
             view=LayoutInflater.from(getContext()).inflate(rid,parent,false);
             holder=new TaskItemHolder();
             holder.taskDate=view.findViewById(R.id.taskDate);
             holder.taskTitle=view.findViewById(R.id.taskTitle);
             holder.taskPhoto=view.findViewById(R.id.taskImage);
             view.setTag(holder);
-        }
-        else {
-            view=convertView;
-            holder=(TaskItemHolder) convertView.getTag();
-        }
+        //}
+       // else {
+        //    view=convertView;
+        //    holder=(TaskItemHolder) convertView.getTag();
+        //}
         holder.taskTitle.setText(task.title);
         holder.taskDate.setText(task.date);
         //read the img

@@ -155,10 +155,10 @@ public class TaskDetail extends AppCompatActivity {
             eHour.setText(""+ehh);
             eMinute.setText(""+emn);
 
-            //if (flag==false){
-           //     Toast.makeText(TaskDetail.this, "Please Check the format", Toast.LENGTH_SHORT).show();
-            //    return;
-           // }
+            if (flag==false){
+                Toast.makeText(TaskDetail.this, "Please Check the format", Toast.LENGTH_SHORT).show();
+                return;
+            }
             delete();
             ContentValues cv=new ContentValues();
             if (taskId>=0)cv.put("id",taskId);

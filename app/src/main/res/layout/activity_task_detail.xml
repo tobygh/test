@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    tools:context=".TaskDetail">
+    tools:context=".TaskDetail"
+    android:background="@drawable/unbackground">
 
     <EditText
         android:id="@+id/taskTitle"
